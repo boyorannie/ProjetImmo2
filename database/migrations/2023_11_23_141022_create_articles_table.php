@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('image');
             $table->enum('type',['maison','appartement','duplex']);
+            $table->enum('statut', ['occupe', 'libre']);
             $table->integer('nombreToilette');
             $table->float('dimension');
             $table->integer('nombreBalcon');
