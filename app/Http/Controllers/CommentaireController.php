@@ -4,47 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\Commentaire;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentaireController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function store(Request $request, $id_article)
     {
-        //
-    }
+        $request->validate([
+            'contenue' => 'required|string|min:3|max:200',
+        ]);
+        $user = Auth::user()->id;
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        $commentaire = new Commentaire();
+        $commentaire->contenu = $request->get('contenu');
+        $commentaire->contenu = $id_article;
+        $commentaire->contenu = $user;
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $commentaire->save();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Commentaire $commentaire)
-    {
-        //
+        return back()->with('status', 'Votre commentaire a ètè ajoutè avec success');
     }
-
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Commentaire $commentaire)
     {
-        //
+        return view('users.modifier', ['commentaire' => $commentaire]);
     }
 
     /**
@@ -52,7 +37,11 @@ class CommentaireController extends Controller
      */
     public function update(Request $request, Commentaire $commentaire)
     {
-        //
+        $commentaire->contenu = $request->get('contenu');
+
+        $commentaire->update();
+
+        return back()->with('status', 'Votre commentaire a ètè modifiè avec success');
     }
 
     /**
@@ -60,6 +49,8 @@ class CommentaireController extends Controller
      */
     public function destroy(Commentaire $commentaire)
     {
-        //
+        $commentaire->delete();
+
+        return back()->with('status', 'Votre commentaire a ètè supprimè avec success');
     }
 }

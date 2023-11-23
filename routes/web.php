@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('user.article.index');
 });
 
 Route::get('/dashboard', function () {
@@ -27,6 +28,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::prefix('users')->middleware('auth')->group(function () {
+    route::post('/commenter/{id_article}', [CommentaireController::class, 'store']);
+    route::get('/commenter/voir/{id}', [CommentaireController::class, 'edit']);
+    route::patch('/commenter/moidier/{id}', [CommentaireController::class, 'update']);
+    route::delete('/commenter/supprimer/{id}', [CommentaireController::class, 'destroy']);
 });
 
 Route::get('home', [HomeController::class, 'index']);
