@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('user.article.index');
 });
+Route::get('/mail','App\Http\Controllers\TestController@envoiMail',);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -40,3 +42,20 @@ Route::prefix('users')->middleware('auth')->group(function () {
 Route::get('home', [HomeController::class, 'index']);
 
 require __DIR__ . '/auth.php';
+
+
+
+// route pour les articles
+
+// Route::get('/articles', [ArticleController::class,'index']);
+// Route::POST('/article/listeArticle/',[ArticleController::class,'store']);
+
+Route::get('/liste', [ArticleController::class, 'index']);
+Route::get('/pageAcueille', [ArticleController::class, 'create']);
+Route::POST('/EnregistrementBaseDeDonne', [ArticleController::class, 'store']);
+
+Route::delete('/Supprimer/{id}', [ArticleController::class, 'destroy']);
+Route::get('/modifier/{id}', [ArticleController::class, 'edit']);
+Route::patch('/misAjour/{id}', [ArticleController::class, 'update']);
+
+
