@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +31,20 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+
+// route pour les articles
+
+// Route::get('/articles', [ArticleController::class,'index']);
+// Route::POST('/article/listeArticle/',[ArticleController::class,'store']);
+
+Route::get('/liste', [ArticleController::class, 'index']);
+Route::get('/pageAcueille', [ArticleController::class, 'create']);
+Route::POST('/EnregistrementBaseDeDonne', [ArticleController::class, 'store']);
+
+Route::delete('/Supprimer/{id}', [ArticleController::class, 'destroy']);
+Route::get('/modifier/{id}', [ArticleController::class, 'edit']);
+Route::patch('/misAjour/{id}', [ArticleController::class, 'update']);
+
+
