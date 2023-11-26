@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Commentaire;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class CommentaireController extends Controller
 {
@@ -16,9 +17,9 @@ class CommentaireController extends Controller
         $user = Auth::user()->id;
 
         $commentaire = new Commentaire();
-        $commentaire->contenu = $request->get('contenu');
-        $commentaire->contenu = $id_article;
-        $commentaire->contenu = $user;
+        $commentaire->contenu = $request->get('contenue');
+        $commentaire->article_id = $id_article;
+        $commentaire->user_id = $user;
 
         $commentaire->save();
 
@@ -27,28 +28,34 @@ class CommentaireController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Commentaire $commentaire)
+    public function edit($id)
     {
-        return view('users.modifier', ['commentaire' => $commentaire]);
+        $commentaire = Commentaire::findOrFail($id);
+        return view('user.commentaire.modifier', ['commentaire' => $commentaire]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Commentaire $commentaire)
+    public function update(Request $request, $id)
     {
+        $request->validate([
+            'contenu' => 'required|string|min:3|max:200',
+        ]);
+        $commentaire = Commentaire::findOrFail($id);
         $commentaire->contenu = $request->get('contenu');
 
         $commentaire->update();
 
-        return back()->with('status', 'Votre commentaire a ètè modifiè avec success');
+        return Redirect::to('/articl/' . $commentaire->article_id)->with('status', 'Votre commentaire a ètè modifiè avec success');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Commentaire $commentaire)
+    public function destroy($id)
     {
+        $commentaire = Commentaire::findOrFail($id);
         $commentaire->delete();
 
         return back()->with('status', 'Votre commentaire a ètè supprimè avec success');

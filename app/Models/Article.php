@@ -18,8 +18,6 @@ class Article extends Model
         'nombreBalcon',
         'espaceVert ',
         'dimension',
-      
-
     ];
 
     public function commentaires()

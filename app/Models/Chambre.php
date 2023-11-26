@@ -19,5 +19,4 @@ class Chambre extends Model
     {
         return $this->belongsToMany(Article::class, 'article_id');
     }
-
 }

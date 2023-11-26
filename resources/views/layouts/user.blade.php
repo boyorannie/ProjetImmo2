@@ -52,36 +52,59 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
                         <a href="/" class="nav-item nav-link active">Home</a>
+                        @if (Route::has('login'))
+                        @auth
+                        <!-- Authentication -->
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">{{Auth::user()->name}}</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                                <a href="404.html" class="dropdown-item">404 Error</a>
+                                <a href="route('profile.edit')" class=" dropdown-item">Profile</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <input type="submit" class=" dropdown-item" value="Log Out">
+                                </form>
                             </div>
                         </div>
                     </div>
-                    @if (Route::has('login'))
-                    @auth
-                    <a href="{{ url('/dashboard') }}" class="btn btn-primary px-3 d-none d-lg-flex m-1">Dashboard</a>
+                    @if (Auth::user()->role == 1)
+                    <a href="{{ url('/admin/dashboard/') }}" class="btn btn-primary px-3 d-none d-lg-flex m-1">Dashboard</a>
+                    @endif
                     @else
-                    <a href="{{ route('login') }}" class="btn btn-primary px-3 d-none d-lg-flex">Se connecter</a>
-                    @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="btn btn-primary px-3 d-none d-lg-flex m-1">Creer un Compte</a>
-                    @endif
-                    @endauth
-                    @endif
                 </div>
-            </nav>
+                <a href="{{ route('login') }}" class="btn btn-primary px-3 d-none d-lg-flex">Se connecter</a>
+                @if (Route::has('register'))
+                <a href="{{ route('register') }}" class="btn btn-primary px-3 d-none d-lg-flex m-1">Creer un Compte</a>
+                @endif
+                @endauth
+                @endif
         </div>
-        <!-- Navbar End -->
+        </nav>
+    </div>
+    <!-- Navbar End -->
+    @if(count($errors) >0)
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-octagon me-1"></i>
+        @foreach($errors->all() as $error)
+        {{$error}}
+        @endforeach
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
+    @if (session('status'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle me-1"></i>
+        {{ session('status') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
+    @yield('content')
 
 
-        @yield('content')
 
-
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
 
     <!-- JavaScript Libraries -->
