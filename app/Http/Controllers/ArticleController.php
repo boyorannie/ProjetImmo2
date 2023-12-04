@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 
@@ -63,7 +64,7 @@ class ArticleController extends Controller
         $articles->nombreBalcon = $request->get('nombreBalcon');
         $articles->espaceVert = $request->get('espaceVert');
         $articles->dimension = $request->get('dimension');
-        $articles->user_id = 1;
+        $articles->user_id = Auth::user()->id;
 
         $articles->save();
         return back()->with('status', 'Article enregistre avec succès');
