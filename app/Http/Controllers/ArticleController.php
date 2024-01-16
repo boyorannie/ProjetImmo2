@@ -66,9 +66,10 @@ class ArticleController extends Controller
         $articles->user_id = 1;
 
         $articles->save();
-        return back()->with('status', 'Article enregistre avec succès');
+        //return back()->with('status', 'Article enregistre avec succès');
         // return view('article.listeArticle', compact('articles'));
-
+        return Redirect::to('/admin/articles/ajouter')->with('status', 'Article enregistre avec succès');
+    
     }
 
     /**
